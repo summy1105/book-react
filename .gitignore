@@ -1,7 +1,4 @@
 # modules 빼기
 **/node_modules/
 
-#배운것중에 저장 안할거
-**/Chap9/styling-app/config/
-
 **/build/
