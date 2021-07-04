@@ -1,3 +1,4 @@
+// @ts-nocheck
 import TodoInsert from 'components/TodoInsert';
 import TodoList from 'components/TodoList';
 import React, { useCallback, useReducer, useRef, useState } from 'react';
