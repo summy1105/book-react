@@ -36,7 +36,7 @@ const Todos = ({
   return (
     <div>
       <form onSubmit={onSubmit}>
-        <input value={input} onChange={onChange} />
+        <input type="text" value={input} onChange={onChange} />
         <button type="submit">등록</button>
       </form>
       <div>
