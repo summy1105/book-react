@@ -1,3 +1,5 @@
+import produce from 'immer';
+
 const CHANGE_INPUT = 'todos/CHANGE_INPUT';
 const INSERT = 'todos/INSERT';
 const TOGGLE = 'todos/TOGGLE';
@@ -33,21 +35,23 @@ const initialState = {
 function todos(state = initialState, action) {
   switch (action.type) {
     case CHANGE_INPUT:
-      return { ...state, input: action.input };
+      return produce(state, (draft) => {
+        draft.input = action.input;
+      });
     case INSERT:
-      return { ...state, todos: state.todos.concat(action.todo) };
+      return produce(state, (draft) => {
+        draft.todos.push(action.todo);
+      });
     case TOGGLE:
-      return {
-        ...state,
-        todos: state.todos.map((todo) =>
-          todo.id === action.id ? { ...todo, done: !todo.done } : todo,
-        ),
-      };
+      return produce(state, (draft) => {
+        const todo = draft.todos.find((todo) => todo.id === action.id);
+        todo.done = !todo.done;
+      });
     case REMOVE:
-      return {
-        ...state,
-        todos: state.todos.filter((todo) => todo.id !== action.id),
-      };
+      return produce(state, (draft) => {
+        const index = draft.todos.findIndex((todo) => todo.id === action.id);
+        draft.todos.splice(index, 1);
+      });
     default:
       return state;
   }
