@@ -1,15 +1,7 @@
 import React from "react";
 import Sample from "../components/Sample";
 import { connect } from "react-redux";
-import {
-  createActionGetPost,
-  createActionGetPostFailure,
-  createActionGetPostSuccess,
-  createActionGetUsers,
-  createActionGetUsersFailure,
-  createActionGetUsersSuccess,
-} from "../modules/sample";
-import * as api from "../lib/api";
+import { getPost, getUsers } from "../modules/sample";
 
 const { useEffect } = React;
 
@@ -23,8 +15,17 @@ const SampleContainer = ({
 }) => {
   //클래스 형태 컴포넌트였다면 componentDidMount
   useEffect(() => {
-    getPost(1);
-    getUsers(1);
+    // useEffect에 파라미터로 넣는 함수는 async로 할 수 없기 때문에
+    // 그 내부에서 aync함수를 선언하고 호출해 줍니다.
+    const fn = async () => {
+      try {
+        await getPost(1);
+        await getUsers(1);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fn();
   }, [getPost, getUsers]);
   return (
     <Sample
@@ -37,32 +38,14 @@ const SampleContainer = ({
 };
 
 export default connect(
-  ({ sample }) => ({
+  ({ sample, loading }) => ({
     post: sample.post,
     users: sample.users,
-    loadingPost: sample.loading.GET_POST,
-    loadingUsers: sample.loading.GET_USERS,
+    loadingPost: loading["sample/GET_POST"],
+    loadingUsers: loading["sample/GET_USERS"],
   }),
-  (dispatch) => ({
-    getPost: async (id) => {
-      dispatch(createActionGetPost());
-      try {
-        const response = await api.getPost(id);
-        dispatch(createActionGetPostSuccess(response.data));
-      } catch (e) {
-        dispatch(createActionGetPostFailure());
-        throw e;
-      }
-    },
-    getUsers: async (id) => {
-      dispatch(createActionGetUsers());
-      try {
-        const response = await api.getUsers(id);
-        dispatch(createActionGetUsersSuccess(response.data));
-      } catch (e) {
-        dispatch(createActionGetUsersFailure());
-        throw e;
-      }
-    },
-  })
+  {
+    getPost,
+    getUsers,
+  }
 )(SampleContainer);
