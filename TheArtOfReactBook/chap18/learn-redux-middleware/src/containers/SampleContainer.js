@@ -19,6 +19,7 @@ const SampleContainer = ({
     // 그 내부에서 aync함수를 선언하고 호출해 줍니다.
     const fn = async () => {
       try {
+        console.log("aaaa", getPost);
         await getPost(1);
         await getUsers(1);
       } catch (e) {

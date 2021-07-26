@@ -27,18 +27,28 @@ const TodosContainer = ({
 
 export default connect(
   (state) => ({ input: state.todos.input, todos: state.todos.todos }),
-  (dispatch) => ({
-    changeInput: (input) => {
-      dispatch(changeInput(input));
-    },
-    insert: (todo) => {
-      dispatch(insert(todo));
-    },
-    toggle: (id) => {
-      dispatch(toggle(id));
-    },
-    remove: (id) => {
-      dispatch(remove(id));
-    },
-  }),
+  {
+    changeInput,
+    insert,
+    toggle,
+    remove,
+  },
 )(TodosContainer);
+
+// export default connect(
+//   (state) => ({ input: state.todos.input, todos: state.todos.todos }),
+//   (dispatch) => ({
+//     changeInput: (input) => {
+//       dispatch(changeInput(input));
+//     },
+//     insert: (todo) => {
+//       dispatch(insert(todo));
+//     },
+//     toggle: (id) => {
+//       dispatch(toggle(id));
+//     },
+//     remove: (id) => {
+//       dispatch(remove(id));
+//     },
+//   }),
+// )(TodosContainer);
